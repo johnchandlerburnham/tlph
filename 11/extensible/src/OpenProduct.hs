@@ -43,6 +43,30 @@ insert' _ ft (OpenProduct v) = OpenProduct $ V.cons (Any ft) v
 type UniqueKey (key :: k) (ts :: [(k, t)]) =
   Null =<< Filter (TyEq key <=< Fst) ts
 
+type family RequireUniqueKey
+  (result :: Bool) (key :: Symbol) (t :: k) (ts :: [(Symbol, k)]) :: Constraint where
+  RequireUniqueKey 'True key t ts = ()
+  RequireUniqueKey 'False key t ts =
+    TypeError ( 'Text "Attempting to add a field named `"
+          ':<>: 'Text key
+          ':<>: 'Text "' with type "
+          ':<>: 'ShowType t
+          ':<>: 'Text " to an OpenProduct."
+          ':$$: 'Text "But the OpenProduct already has a field `"
+          ':<>: 'Text key
+          ':<>: 'Text "' with type "
+          ':<>: 'ShowType (LookupType key ts)
+          ':$$: 'Text "Consider using `update' "
+          ':<>: 'Text "instead of `insert'."
+              )
+
+friendlyInsert :: RequireUniqueKey (Eval (UniqueKey key ts)) key t ts
+               => Key key
+               -> f t
+               -> OpenProduct f ts
+               -> OpenProduct f ('(key, t) ': ts)
+friendlyInsert _ ft (OpenProduct v) = OpenProduct $ V.cons (Any ft) v
+
 insert :: Eval (UniqueKey key ts) ~ 'True
        => Key key
        -> f t
@@ -77,6 +101,7 @@ update :: forall key ts t f. KnownNat (FindElem key ts)
        -> OpenProduct f (Eval (UpdateElem key t ts))
 update _ ft (OpenProduct v) =
   OpenProduct $ v V.// [(findElem @key @ts, Any ft)]
+
 
 type DeleteElem (key :: Symbol) (ts :: [(Symbol, k)]) =
   Filter (Not <=< TyEq key <=< Fst) ts
@@ -116,6 +141,6 @@ upsert :: forall key ts t f. FindUpsertElem (FindKeyIndex key ts)
        -> f t
        -> OpenProduct f ts
        -> OpenProduct f (Eval (UpdateElem key t ts))
-upsert k ft (OpenProduct v) = OpenProduct $ case upsertElem @(UpsertLoc key ts) of
+upsert k ft (OpenProduct v) = OpenProduct $ case upsertElem @(FindKeyIndex key ts) of
   Nothing -> V.cons (Any ft) v
-  Just n  -> v V.\\ [(n, Any ft)]
+  Just n  -> v V.// [(n, Any ft)]

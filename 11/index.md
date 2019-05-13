@@ -2,7 +2,6 @@
 title: "Notes (TLPH 11/15): Extensible Data
 ---
 
-
 # 11.2 Open Sums
 
 ## Exercise 11.2 (i)

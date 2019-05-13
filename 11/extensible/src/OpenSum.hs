@@ -29,9 +29,25 @@ type FindElem (key :: k) (ts :: [k]) =
   FromMaybe Stuck =<< FindIndex (TyEq key) ts
 
 type Member t ts = KnownNat (Eval (FindElem t ts))
+type FriendlyMember f t ts = KnownNat (Eval (FriendlyFindElem f t ts))
+
+type family FriendlyFindElem (f :: k -> Type) (t :: k) (ts :: [k]) where
+  FriendlyFindElem f t ts = FromMaybe
+    (TypeError
+      ('Text "Attempted to call `friendlyPrj` to produce a `"
+        ':<>: 'ShowType (f t)
+        ':<>: 'Text "'."
+        ':$$: 'Text "But the OpenSum can only contain one of:"
+        ':$$: 'Text " "
+        ':<>: 'ShowType ts
+      )) =<< FindIndex (TyEq t) ts
+
 
 findElem :: forall t ts. Member t ts => Int
 findElem = fromIntegral . natVal $ Proxy @(Eval (FindElem t ts))
+
+findFriendlyElem :: forall f t ts. FriendlyMember f t ts => Int
+findFriendlyElem = fromIntegral . natVal $ Proxy @(Eval (FriendlyFindElem f t ts))
 
 inj :: forall f t ts. Member t ts => f t -> OpenSum f ts
 inj = UnsafeOpenSum (findElem @t @ts)
@@ -39,6 +55,12 @@ inj = UnsafeOpenSum (findElem @t @ts)
 prj :: forall f t ts. Member t ts => OpenSum f ts -> Maybe (f t)
 prj (UnsafeOpenSum i f) =
   if i == findElem @t @ts
+  then Just $ unsafeCoerce f
+  else Nothing
+
+friendlyPrj :: forall f t ts. FriendlyMember f t ts => OpenSum f ts -> Maybe (f t)
+friendlyPrj (UnsafeOpenSum i f) =
+  if i == findFriendlyElem @f @t @ts
   then Just $ unsafeCoerce f
   else Nothing
 
