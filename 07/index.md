@@ -1,5 +1,5 @@
 ---
-title: "Notes (TLPH 07/15): Existential Types
+title: "Notes (TLPH 07/15): Existential Types"
 ---
 
 # 7.1 Existential Types and Eliminators

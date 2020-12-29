@@ -1,5 +1,5 @@
 ---
-title: "Notes (TLPH 04/15): Working with Types
+title: "Notes (TLPH 04/15): Working with Types"
 ---
 
 # 4.1 Type Scoping

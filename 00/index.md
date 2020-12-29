@@ -1,6 +1,9 @@
 ---
 title: "Notes: Thinking with Types, Type-Level Programming in Haskell by Sandy
 Maguire"
+author: jcb
+date: 2019-05-13
+tags: tlph, notes, haskell
 ---
 
 # Contents
@@ -16,8 +19,8 @@ Maguire"
 - [Chapter 09: Associated Type Families](/projects/tlph/09)
 - [Chapter 10: First Class Families](/projects/tlph/10)
 - [Chapter 11: Extensible Data](/projects/tlph/11)
-- [Chapter 12: Custom Type Errors](/projects/tlph/12)
-- [Chapter 13: Generics](/projects/tlph/13)
-- [Chapter 14: Indexed Monads](/projects/tlph/14)
-- [Chapter 15: Dependent Types](/projects/tlph/15)
+- Chapter 12: Custom Type Errors
+- Chapter 13: Generics
+- Chapter 14: Indexed Monads
+- Chapter 15: Dependent Types
 

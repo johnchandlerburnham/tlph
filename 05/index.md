@@ -1,5 +1,5 @@
 ---
-title: "Notes (TLPH 05/15): Constraints and GADTS
+title: "Notes (TLPH 05/15): Constraints and GADTS"
 ---
 
 # 5.1 Introduction

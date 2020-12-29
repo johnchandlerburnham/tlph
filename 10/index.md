@@ -1,5 +1,5 @@
 ---
-title: "Notes (TLPH 10/15): First Class Families
+title: "Notes (TLPH 10/15): First Class Families"
 ---
 
 # 10.1 Defunctionalization

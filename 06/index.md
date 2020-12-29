@@ -1,5 +1,5 @@
 ---
-title: "Notes (TLPH 06/15): Rank-N Types
+title: "Notes (TLPH 06/15): Rank-N Types"
 ---
 
 # 6.1 Introduction

@@ -1,5 +1,5 @@
 ---
-title: "Notes (TLPH 11/15): Extensible Data
+title: "Notes (TLPH 11/15): Extensible Data"
 ---
 
 # 11.2 Open Sums
